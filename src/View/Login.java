@@ -4,6 +4,8 @@
  */
 package View;
 
+import Controller.LoginController;
+
 /**
  *
  * @author USER
@@ -51,6 +53,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,7 +79,7 @@ public class Login extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txtUsername)
                                 .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)))))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(222, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnExit)
@@ -102,8 +109,87 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+LoginController controller = new LoginController();
+
+String username = txtUsername.getText().trim();
+String password = new String(txtPassword.getPassword());
+
+if (username.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Please enter your username.",
+            "Login Error",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+    );
+    txtUsername.requestFocus();
+    return;
+}
+
+if (password.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Please enter your password.",
+            "Login Error",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+    );
+    txtPassword.requestFocus();
+    return;
+}
+
+Model.User user = controller.login(username, password);
+
+if (user != null) {
+
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Login successful!\nWelcome, " + user.getUsername(),
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+    );
+
+    Dashboard dashboard = new Dashboard();
+    dashboard.setLocationRelativeTo(null);
+    dashboard.setVisible(true);
+
+    this.dispose();
+
+
+
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Login successful!\nWelcome, " + user.getUsername(),
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+    );
+
+    // Dashboard will be opened here later.
+
+} else {
+
+    javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Invalid username or password.",
+            "Login Failed",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+    );
+
+    txtPassword.setText("");
+    txtPassword.requestFocus();
+}        // TODO add your handling code here:
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+ int result = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to exit?",
+        "Exit System",
+        javax.swing.JOptionPane.YES_NO_OPTION
+);
+
+if (result == javax.swing.JOptionPane.YES_OPTION) {
+    System.exit(0);
+}       // TODO add your handling code here:
+    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
