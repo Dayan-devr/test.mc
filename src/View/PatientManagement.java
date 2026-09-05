@@ -42,6 +42,18 @@ private void loadPatients() {
         });
     }
 }
+
+private void clearFields() {
+
+    txtPatientId.setText("");
+    txtPatientName.setText("");
+    txtAddress.setText("");
+    txtContact.setText("");
+
+    tblPatients.clearSelection();
+
+    txtPatientName.requestFocus();
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,14 +124,29 @@ private void loadPatients() {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear");
 
         lblSearch.setText("Search");
 
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         tblPatients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -132,6 +159,11 @@ private void loadPatients() {
                 "Patient ID", "Patient Name", "Address", "Contact Number"
             }
         ));
+        tblPatients.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPatientsMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblPatients);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -306,6 +338,233 @@ private void loadPatients() {
     }
 
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void tblPatientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPatientsMouseClicked
+  int selectedRow = tblPatients.getSelectedRow();
+
+if (selectedRow >= 0) {
+
+    txtPatientId.setText(
+            tblPatients.getValueAt(selectedRow, 0).toString()
+    );
+
+    txtPatientName.setText(
+            tblPatients.getValueAt(selectedRow, 1).toString()
+    );
+
+    txtAddress.setText(
+            tblPatients.getValueAt(selectedRow, 2).toString()
+    );
+
+    txtContact.setText(
+            tblPatients.getValueAt(selectedRow, 3).toString()
+    );
+}      // TODO add your handling code here:
+    }//GEN-LAST:event_tblPatientsMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+
+
+    String idText = txtPatientId.getText().trim();
+    String name = txtPatientName.getText().trim();
+    String address = txtAddress.getText().trim();
+    String contact = txtContact.getText().trim();
+
+    // Validate patient ID
+    if (idText.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Please select a patient first.",
+                "Validation Error",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    int patientId;
+
+    try {
+        patientId = Integer.parseInt(idText);
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Invalid patient ID.",
+                "Validation Error",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    // Validate name
+    if (name.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Please enter the patient name.",
+                "Validation Error",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        txtPatientName.requestFocus();
+        return;
+    }
+
+    // Validate address
+    if (address.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Please enter the patient address.",
+                "Validation Error",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        txtAddress.requestFocus();
+        return;
+    }
+
+    // Validate contact
+    if (contact.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Please enter the contact number.",
+                "Validation Error",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        txtContact.requestFocus();
+        return;
+    }
+
+    Controller.PatientController controller =
+            new Controller.PatientController();
+
+    boolean success = controller.updatePatient(
+            patientId,
+            name,
+            address,
+            contact
+    );
+
+    if (success) {
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Patient updated successfully.",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+
+        loadPatients();
+        
+        
+
+        clearFields();
+
+    } else {
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Unable to update patient.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
+       // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+   
+
+    String idText = txtPatientId.getText().trim();
+
+    // Check whether a patient is selected
+    if (idText.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Please select a patient to delete.",
+                "Validation Error",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    int patientId;
+
+    try {
+        patientId = Integer.parseInt(idText);
+    } catch (NumberFormatException e) {
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Invalid patient ID.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    Controller.PatientController controller =
+            new Controller.PatientController();
+
+    boolean success = controller.deletePatient(patientId);
+
+    if (success) {
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Patient deleted successfully.",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+
+        loadPatients();
+        clearFields();
+
+    } else {
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Unable to delete patient.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
+    // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+
+
+    String searchName = txtSearch.getText().trim();
+
+    Controller.PatientController controller =
+            new Controller.PatientController();
+
+    java.util.List<Model.Patient> patients =
+            controller.searchPatients(searchName);
+
+    javax.swing.table.DefaultTableModel model =
+            (javax.swing.table.DefaultTableModel) tblPatients.getModel();
+
+    model.setRowCount(0);
+
+    for (Model.Patient patient : patients) {
+
+        model.addRow(new Object[]{
+            patient.getPatientId(),
+            patient.getPatientName(),
+            patient.getAddress(),
+            patient.getContactNumber()
+        });
+    }
+
+    if (patients.isEmpty()) {
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "No patients found.",
+                "Search Result",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+       // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
