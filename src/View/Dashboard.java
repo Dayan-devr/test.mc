@@ -4,6 +4,8 @@
  */
 package View;
 
+import View.PatientManagement;
+
 /**
  *
  * @author USER
@@ -124,7 +126,10 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPatientsActionPerformed
-        // TODO add your handling code here:
+  PatientManagement patientManagement = new PatientManagement();
+patientManagement.setLocationRelativeTo(null);
+patientManagement.setVisible(true);
+this.dispose();     // TODO add your handling code here:
     }//GEN-LAST:event_btnPatientsActionPerformed
 
     /**
