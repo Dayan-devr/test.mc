@@ -138,6 +138,11 @@ private void clearFields() {
         });
 
         btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         lblSearch.setText("Search");
 
@@ -565,6 +570,20 @@ if (selectedRow >= 0) {
     }
        // TODO add your handling code here:
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+
+
+    // Clear text fields
+    clearFields();
+
+    // Show all patients again
+    loadPatients();
+
+    // Clear search box
+    txtSearch.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
